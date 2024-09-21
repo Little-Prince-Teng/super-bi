@@ -11,3 +11,7 @@ import Container from './Container.vue';
 
 const props = defineProps()
 </script>
+
+<style lang="less">
+@import './index.less';
+</style>

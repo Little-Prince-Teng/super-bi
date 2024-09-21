@@ -39,7 +39,6 @@ const [collect, drag] = useDrag(() => ({
 </script>
 
 <style scoped lang="less">
-@import './index.less';
 
 .list-wrap {
 	/* 样式 */

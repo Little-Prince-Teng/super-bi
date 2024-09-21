@@ -13,7 +13,6 @@
     background: #2f54eb;
   }
   .editorWrap {
-    background-color: rgba(245, 245, 245, 1);
     height: 100%;
     width: 100%;
   }
@@ -27,7 +26,7 @@
       padding: 10px 0 10px 10px;
       box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
       display: inline-block;
-      background-color: #fff;
+      // background-color: #fff;
       & > div:nth-child(1) {
         height: 100%;
       }
@@ -78,16 +77,17 @@
       }
     }
     .tickMark {
-      overflow: hidden;
+      overflow: scroll;
       height: 100%;
       position: relative;
       flex: 1;
+			background: #141414;
       .tickMarkTop {
         width: 100%;
         height: 50px;
-        position: absolute;
-        top: 0;
-        left: 0;
+        position: fixed;
+        top: 40px;
+        // left: 0;
       }
       .tickMarkLeft {
         width: 50px;

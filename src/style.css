@@ -4,6 +4,10 @@
 	overflow: hidden;
 }
 
+#app {
+	height: 100%;
+}
+
 body {
   color: hsla(0, 0%, 100%, .85);
 	font-size: 14px;
