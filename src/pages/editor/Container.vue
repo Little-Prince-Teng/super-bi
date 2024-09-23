@@ -11,7 +11,7 @@
 					boxShadow: 'none'
 				}">
 				<div class="componentList">
-					<el-tabs class="editorTabclass" tab-position="left" @tabClick="() => changeCollapse(false)">
+					<el-tabs class="editorTabclass" tab-position="left" @tabClick="() => changeCollapse(false)" v-model="activeTab">
 						<TabRender />
 						<!-- <template v-for="(tab, index) in tabRender">
 							<el-tab-pane :label="tab.label" :name="index"></el-tab-pane>
@@ -34,6 +34,15 @@
 				<div class="tickMarkLeft">
 					<Calibration direction="left" id="calibrationLeft" :multiple="scaleNum" />
 				</div>
+				<DndProvider :backend="HTML5Backend">
+					<SourceBox
+						:dragState="dragState"
+						:setDragState="setDragState"
+						:scaleNum="scaleNum"
+						:canvasId="canvasId"
+						:allType="allType"
+					/>
+				</DndProvider>
 			</div>
 		</div>
 	</div>
@@ -43,6 +52,7 @@
 import { ref, computed } from 'vue';
 import HeaderComponent from './component/Header/header.vue';
 import TargetBox from './TargetBox.vue';
+import SourceBox from './SourceBox.vue';
 import DynamicEngine from '@/core/DynamicEngine';
 import Calibration from '@/components/Calibration';
 
@@ -58,8 +68,16 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 const collapsed = ref(false);
 const pointData = ref([]);
 const scaleNum = ref(1);
+const dragState = ref({ x: 0, y: 0 });
+const activeTab = ref('base');
 // 指定画布的id
 let canvasId = 'js_canvas';
+const allType = computed(() => {
+	return [...baseTpl, ...mediaTpl, ...visualTpl].map((v) => v.type);
+});
+const setDragState = () => {
+	return { x: 0, y: 0 };
+}
 
 const redohandler = () => {};
 

@@ -14,7 +14,7 @@ type DynamicType = {
 const DynamicFunc = (type: string, componentsType: string) => {
 	return defineAsyncComponent({
 		loader: async () => {
-			const { default: Graph } = await import(`@/materials/${componentsType}${type}`);
+			const { default: Graph } = await import(`@/materials/${componentsType}/${type}/index.tsx`);
 			const Component = Graph;
 			return (props: DynamicType) => {
 				const { config, isTpl } = props;
@@ -39,8 +39,7 @@ const DynamicEngine = defineComponent({
 	},
 	setup(props) {
 		const Dynamic = computed(() => DynamicFunc(props.type, props.category));
-
-		return () => <Dynamic {...props} />;
+		return () => <Dynamic.value {...props} />;
 	}
 });
 

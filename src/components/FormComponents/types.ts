@@ -124,5 +124,14 @@ export type baseFormUnion =
 	| baseFormMyCheckboxTpl
 	| baseFormMySelectTpl
 	| baseFormDateTpl;
+export type baseFormUnionType =
+	| baseFormTextTpl["type"]
+	| baseFormTextTipTpl["type"]
+	| baseFormNumberTpl["type"]
+	| baseFormTextAreaTpl["type"]
+	| baseFormMyRadioTpl["type"]
+	| baseFormMyCheckboxTpl["type"]
+	| baseFormMySelectTpl["type"]
+	| baseFormDateTpl["type"];
 
 export type TFormItemsDefaultType = Array<baseFormUnion>;
