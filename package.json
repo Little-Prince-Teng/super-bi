@@ -16,6 +16,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "vue": "^3.4.37",
     "vue-draggable-resizable": "^3.0.0",
+    "vue-router": "^4.4.5",
     "vue3-dnd": "^2.1.0"
   },
   "devDependencies": {

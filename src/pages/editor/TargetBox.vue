@@ -22,7 +22,7 @@ const itemConfig = computed(() => schema[item.value.type as typeof schema].confi
 const editableElement = computed(() => schema[item.value.type as typeof schema].editData);
 
 const [collect, drag] = useDrag(() => ({
-	type: 'BOX',
+	type: item?.value.type,
 	item: {
 		type: item.value.type,
 		config: itemConfig.value,

@@ -61,12 +61,17 @@ import mediaTpl from '@/materials/media/template';
 import visualTpl from '@/materials/visual/template';
 import schema from '@/materials/schema';
 
+import { useEditorStore } from '@/store/editor';
 import { ElTabPane } from "element-plus";
 import { DndProvider } from 'vue3-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
+const editorStore = useEditorStore();
+const props = defineProps(['pstate']);
+console.log('props.pstate', props.pstate);
+const pointData = computed(() => props.pstate ? props.pstate.pointData : []);
+const curPoint = computed(() => props.pstate ? props.pstate.curPoint : null);
 const collapsed = ref(false);
-const pointData = ref([]);
 const scaleNum = ref(1);
 const dragState = ref({ x: 0, y: 0 });
 const activeTab = ref('base');
@@ -83,7 +88,9 @@ const redohandler = () => {};
 
 const undohandler = () => {};
 
-const clearData = () => {};
+const clearData = () => {
+	editorStore.clearAll();
+};
 
 const changeCollapse = (value) => {
 	collapsed.value = value;

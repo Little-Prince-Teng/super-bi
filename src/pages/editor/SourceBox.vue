@@ -1,19 +1,14 @@
 <template>
-	<VueDraggableResizable
-		:x="dragState.x"
-		:y="dragState.y"
-		classNameHandle=".js_box"
-		@dragstop="handleDragStop"
-	>
-		<div class="canvasBox">
-			<div :style="{ transform: `scale(${scaleNum})`, position: 'relative', width: '100%', height: '100%' }">
-				<div :id="canvasId" class="canvas" :style="{ opacity, width: '1440px', height: '900px', backgroundImage: `url('../../../public/img/canvas_bg.jpg')` }" ref="drop">
-					<ViewRender v-if="pointData.length > 0" :pointData="pointData" :width="canvasRect[0] || 0"
-						:dragStop="dragStop" :onDragStart="onDragStart" :onResizeStop="onResizeStop" />
-				</div>
+	<div class="canvasBox">
+		<div :style="{ transform: `scale(${scaleNum})`, position: 'relative', width: '100%', height: '100%' }">
+			<div :id="canvasId" :ref="drop" class="canvas"
+				:style="{ opacity, width: '1440px', height: '900px', backgroundImage: `url('../../../public/img/canvas_bg.jpg')` }">
+				<div>{{ pointData.length }}</div>
+				<ViewRender v-if="pointData.length > 0" :pointData="pointData" :width="canvasRect[0] || 0"
+					:dragStop="dragStop" :onDragStart="onDragStart" :onResizeStop="onResizeStop" />
 			</div>
 		</div>
-	</VueDraggableResizable>
+	</div>
 	<!-- <MyAwesomeMenu /> -->
 </template>
 
@@ -21,9 +16,9 @@
 import { ref, onMounted, watchEffect, reactive, computed, toRefs } from "vue";
 import { useDrop } from "vue3-dnd";
 import VueDraggableResizable from 'vue-draggable-resizable';
-// import { useStore } from "vuex";
+import { useEditorStore } from '@/store/editor';
 import { ViewRender } from "@/core";
-// import { uuid } from "@/utils/tool";
+import { uuid } from "@/utils/tool";
 
 const props = defineProps({
 	pstate: Object,
@@ -35,7 +30,7 @@ const props = defineProps({
 	setDragState: Function,
 });
 
-// const store = useStore();
+const editorStore = useEditorStore();
 const pointData = computed(() => (props.pstate ? props.pstate.pointData : []));
 const cpointData = computed(() => (props.cstate ? props.cstate.pointData : []));
 const canvasRect = ref([]);
@@ -43,7 +38,7 @@ const isShowTip = ref(true);
 const opacity = computed(() => (isOver ? 0.7 : 1));
 const [ collect, drop ] = useDrop(() => ({
 	accept: props.allType,
-	drop(item, monitor) {
+	drop: (item, monitor) => {
 		const parentDiv = document.getElementById(props.canvasId);
 		const pointRect = parentDiv.getBoundingClientRect();
 		const top = pointRect.top;
@@ -54,19 +49,21 @@ const [ collect, drop ] = useDrop(() => ({
 		const w = item.type === "Icon" ? 3 : col;
 		const gridY = Math.ceil(y / cellHeight);
 
-		// store.dispatch("editorModal/addPointData", {
-		// 	id: uuid(6, 10),
-		// 	item,
-		// 	point: {
-		// 		i: `x-${pointData.value.length}`,
-		// 		x: 0,
-		// 		y: gridY,
-		// 		w,
-		// 		h: item.h,
-		// 		isBounded: true,
-		// 	},
-		// 	status: "inToCanvas",
-		// });
+		editorStore.addPointData({
+			payload: {
+				id: uuid(6, 10),
+				item,
+				point: {
+					i: `x-${pointData.value.length}`,
+					x: 0,
+					y: gridY,
+					w,
+					h: item.h,
+					isBounded: true,
+				},
+				status: "inToCanvas",
+			}
+		})
 	},
 	collect: monitor => ({
 		isOver: monitor.isOver()
