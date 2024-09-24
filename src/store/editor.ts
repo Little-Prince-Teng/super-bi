@@ -14,21 +14,14 @@ export const useEditorStore = defineStore('Editor', {
 	}),
 	actions: {
 		addPointData({ payload }) {
-			let pointData = [...this.pointData, payload];
-			overSave("userData", pointData);
-			return {
-				...this,
-				pointData,
-				curPoint: payload
-			};
+			this.pointData = [...this.pointData, payload];
+			this.curPoint = payload;
+			overSave("userData", this.pointData);
 		},
 		clearAll() {
+			this.pointData = [];
+			this.curPoint = null;
 			overSave("userData", []);
-			return {
-				...this,
-				pointData: [],
-				curPoint: null
-			};
 		}
 	}
 });

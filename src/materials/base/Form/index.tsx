@@ -1,6 +1,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import BaseForm from './BaseForm';
-// import styles from './index.less';
+import { ElButton } from 'element-plus';
+import './index.less';
 import logo from '@/assets/img/form.png';
 
 interface IFormConfig {
@@ -28,6 +29,7 @@ export default defineComponent({
     formControls: Array,
     isTpl: Boolean,
   },
+	components: { ElButton },
   setup(props: IFormConfig & { isTpl: boolean }) {
     const formData = ref<Record<string, any>>({});
     
@@ -61,12 +63,12 @@ export default defineComponent({
         {!props.isTpl && (
           <div
             class="formWrap"
-            style={{
-              backgroundColor: props.bgColor,
-              overflow: 'hidden',
-              position: 'absolute',
-              pointerEvents: isEditorPage.value ? 'none' : 'initial',
-            }}
+            // style={{
+            //   backgroundColor: props.bgColor,
+            //   overflow: 'hidden',
+            //   position: 'absolute',
+            //   pointerEvents: isEditorPage.value ? 'none' : 'initial',
+            // }}
           >
             {props.title && (
               <div

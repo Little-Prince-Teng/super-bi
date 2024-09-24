@@ -1,5 +1,6 @@
 import { defineComponent, ref } from 'vue';
-// import styles from './baseForm.less';
+import { ElForm, ElFormItem, ElInput, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSelect, ElDatePicker } from 'element-plus';
+import './baseForm.less';
 import {
   baseFormDateTpl,
   baseFormMyRadioTpl,
@@ -24,19 +25,24 @@ const BaseForm: TBaseForm = {
       placeholder: String,
       onChange: Function,
     },
+		components: {
+			ElForm,
+			ElInput,
+			ElFormItem
+		},
     setup(props) {
       const handleChange = (value: string | undefined) => {
         props.onChange?.(value);
       };
       return () => (
-        <ElCell title={props.label}>
+        <ElFormItem label={props.label}>
           <ElInput
             clearable
             type="text"
             placeholder={props.placeholder}
             onInput={handleChange}
           />
-        </ElCell>
+        </ElFormItem>
       );
     },
   }),
@@ -47,12 +53,16 @@ const BaseForm: TBaseForm = {
       placeholder: String,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElInput
+		},
     setup(props) {
       const handleChange = (value: string | undefined) => {
         props.onChange?.(value);
       };
       return () => (
-        <ElCell title={props.label}>
+        <ElFormItem label={props.label}>
           <ElInput
             type="text"
             rows={3}
@@ -61,7 +71,7 @@ const BaseForm: TBaseForm = {
             placeholder={props.placeholder}
             onInput={handleChange}
           />
-        </ElCell>
+        </ElFormItem>
       );
     },
   }),
@@ -72,18 +82,22 @@ const BaseForm: TBaseForm = {
       placeholder: String,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElInput
+		},
     setup(props) {
       const handleChange = (value: string | undefined | number) => {
         props.onChange?.(value);
       };
       return () => (
-        <ElCell title={props.label}>
+        <ElFormItem label={props.label}>
           <ElInput
             type="number"
             placeholder={props.placeholder}
             onInput={handleChange}
           />
-        </ElCell>
+        </ElFormItem>
       );
     },
   }),
@@ -94,6 +108,11 @@ const BaseForm: TBaseForm = {
       options: Array,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElRadioGroup,
+			ElRadio
+		},
     setup(props) {
       const handleChange = (value: string | number | undefined) => {
         props.onChange?.(value);
@@ -101,7 +120,7 @@ const BaseForm: TBaseForm = {
       return () => (
         <div class="radioWrap">
           <div class="radioTitle">{props.label}</div>
-          <ElCell>
+          <ElFormItem>
             <ElRadioGroup onChange={handleChange}>
               {props.options.map((item, i) => (
                 <ElRadio value={item.value} key={i} class="radioItem">
@@ -109,7 +128,7 @@ const BaseForm: TBaseForm = {
                 </ElRadio>
               ))}
             </ElRadioGroup>
-          </ElCell>
+          </ElFormItem>
         </div>
       );
     },
@@ -121,6 +140,11 @@ const BaseForm: TBaseForm = {
       options: Array,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElCheckboxGroup,
+			ElCheckbox
+		},
     setup(props) {
       const handleChange = (value: Array<any> | undefined) => {
         props.onChange?.(value);
@@ -128,7 +152,7 @@ const BaseForm: TBaseForm = {
       return () => (
         <div class="radioWrap">
           <div class="radioTitle">{props.label}</div>
-          <ElCell>
+          <ElFormItem>
             <ElCheckboxGroup onChange={handleChange}>
               {props.options.map((item, i) => (
                 <ElCheckbox value={item.value} key={i} class="radioItem">
@@ -136,7 +160,7 @@ const BaseForm: TBaseForm = {
                 </ElCheckbox>
               ))}
             </ElCheckboxGroup>
-          </ElCell>
+          </ElFormItem>
         </div>
       );
     },
@@ -148,6 +172,10 @@ const BaseForm: TBaseForm = {
       placeholder: String,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElDatePicker
+		},
     setup(props) {
       const value = ref<string | Date | null>(null);
       const handleChange = (v: Date) => {
@@ -155,7 +183,7 @@ const BaseForm: TBaseForm = {
         props.onChange?.(formatTime('yyyy-MM-dd', v));
       };
       return () => (
-        <ElCell title={props.label}>
+        <ElFormItem label={props.label}>
           <ElDatePicker
             placeholder={props.placeholder}
             mode="date"
@@ -164,7 +192,7 @@ const BaseForm: TBaseForm = {
             v-model={value.value}
             onOk={handleChange}
           />
-        </ElCell>
+        </ElFormItem>
       );
     },
   }),
@@ -175,14 +203,18 @@ const BaseForm: TBaseForm = {
       options: Array,
       onChange: Function,
     },
+		components: {
+			ElFormItem,
+			ElSelect
+		},
     setup(props) {
       const handleChange = (value: any) => {
         props.onChange?.(value);
       };
       return () => (
-        <ElCell title={props.label}>
+        <ElFormItem label={props.label}>
           <ElSelect dataSource={props.options} onOk={handleChange} />
-        </ElCell>
+        </ElFormItem>
       );
     },
   }),
@@ -193,9 +225,12 @@ const BaseForm: TBaseForm = {
       color: String,
       fontSize: String,
     },
+		components: {
+			ElFormItem
+		},
     setup(props) {
       return () => (
-        <ElCell title={<div style={{ color: props.color, fontSize: props.fontSize }}>{props.label}</div>} />
+        <ElFormItem title={<div style={{ color: props.color, fontSize: props.fontSize }}>{props.label}</div>} />
       );
     },
   }),

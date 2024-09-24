@@ -36,6 +36,7 @@
 				</div>
 				<DndProvider :backend="HTML5Backend">
 					<SourceBox
+						:pstate="props.pstate"
 						:dragState="dragState"
 						:setDragState="setDragState"
 						:scaleNum="scaleNum"
@@ -49,7 +50,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, computed } from 'vue';
+import { ref, computed, toRaw } from 'vue';
 import HeaderComponent from './component/Header/header.vue';
 import TargetBox from './TargetBox.vue';
 import SourceBox from './SourceBox.vue';
@@ -68,7 +69,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const editorStore = useEditorStore();
 const props = defineProps(['pstate']);
-console.log('props.pstate', props.pstate);
 const pointData = computed(() => props.pstate ? props.pstate.pointData : []);
 const curPoint = computed(() => props.pstate ? props.pstate.curPoint : null);
 const collapsed = ref(false);

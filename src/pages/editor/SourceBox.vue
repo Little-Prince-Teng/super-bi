@@ -3,9 +3,7 @@
 		<div :style="{ transform: `scale(${scaleNum})`, position: 'relative', width: '100%', height: '100%' }">
 			<div :id="canvasId" :ref="drop" class="canvas"
 				:style="{ opacity, width: '1440px', height: '900px', backgroundImage: `url('../../../public/img/canvas_bg.jpg')` }">
-				<div>{{ pointData.length }}</div>
-				<ViewRender v-if="pointData.length > 0" :pointData="pointData" :width="canvasRect[0] || 0"
-					:dragStop="dragStop" :onDragStart="onDragStart" :onResizeStop="onResizeStop" />
+				<ViewRender v-if="pointData.length > 0" :pointData="pointData" :width="canvasRect[0] || 0" />
 			</div>
 		</div>
 	</div>
@@ -22,7 +20,6 @@ import { uuid } from "@/utils/tool";
 
 const props = defineProps({
 	pstate: Object,
-	cstate: Object,
 	scaleNum: Number,
 	canvasId: String,
 	allType: Array,

@@ -1,8 +1,7 @@
 import { defineComponent, PropType } from 'vue';
 import VueDraggableResizable from 'vue-draggable-resizable';
 import DynamicEngine from '@/core/DynamicEngine';
-// import styles from './viewRender.module.less';
-
+import './viewRender.less';
 interface PointDataItem {
   id: string;
   item: Record<string, any>;
@@ -51,24 +50,12 @@ export default defineComponent({
       <VueDraggableResizable
         w={props.width}
         grid={[1, 1]}
-        onDrag={props.dragStop}
-        onDragStart={props.onDragStart}
-        onResize={props.onResizeStop}
-        style={{
-          minHeight: '100vh',
-          backgroundColor: props.pageData?.bgColor || 'initial',
-          backgroundImage: props.pageData?.bgImage
-            ? `url(${props.pageData.bgImage[0].url})`
-            : 'initial',
-          backgroundSize: '100%',
-          backgroundRepeat: 'no-repeat',
-        }}
       >
         {props.pointData.map((value: PointDataItem) => (
           <div
             key={value.id}
             data-grid={value.point}
-            class={props.onDragStart ? styles.dragItem : ''}
+            class="dragItem"
           >
             <DynamicEngine {...value.item} isTpl={false} />
           </div>
