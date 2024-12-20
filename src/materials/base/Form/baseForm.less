@@ -1,9 +1,34 @@
 .radioWrap {
-  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 16px;
   .radioTitle {
-    padding: 19px 14px;
+    flex-shrink: 0;
+    padding-right: 16px;
+    display: inline-block;
+    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: right;
   }
-  .radioItem {
-    margin-top: 10px;
+}
+
+.formItem {
+  display: flex;
+  align-items: center;
+  padding-bottom: 16px;
+  .formLabel {
+    padding-right: 16px;
+    flex-shrink: 0;
+    min-width: 60px;
+    width: 100px;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: right;
   }
 }

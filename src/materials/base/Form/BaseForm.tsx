@@ -1,5 +1,5 @@
-import { defineComponent, ref } from 'vue';
-import { ElForm, ElFormItem, ElInput, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSelect, ElDatePicker } from 'element-plus';
+// import { defineComponent, defineProps, ref } from 'vue';
+import { ElInput, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSelect, ElDatePicker } from 'element-plus';
 import './baseForm.less';
 import {
   baseFormDateTpl,
@@ -12,228 +12,126 @@ import {
   baseFormTextTipTpl,
   baseFormUnionType
 } from '@/components/FormComponents/types';
-import { formatTime } from '@/utils/tool';
 
 type TBaseForm = {
   [key in baseFormUnionType]: any;
 };
 
 const BaseForm: TBaseForm = {
-  Text: defineComponent({
-    props: {
-      label: String,
-      placeholder: String,
-      onChange: Function,
-    },
-		components: {
-			ElForm,
-			ElInput,
-			ElFormItem
-		},
-    setup(props) {
-      const handleChange = (value: string | undefined) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <ElFormItem label={props.label}>
-          <ElInput
-            clearable
-            type="text"
-            placeholder={props.placeholder}
-            onInput={handleChange}
-          />
-        </ElFormItem>
-      );
-    },
-  }),
-
-  Textarea: defineComponent({
-    props: {
-      label: String,
-      placeholder: String,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElInput
-		},
-    setup(props) {
-      const handleChange = (value: string | undefined) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <ElFormItem label={props.label}>
-          <ElInput
-            type="text"
-            rows={3}
-            autoHeight
-            showLength
-            placeholder={props.placeholder}
-            onInput={handleChange}
-          />
-        </ElFormItem>
-      );
-    },
-  }),
-
-  Number: defineComponent({
-    props: {
-      label: String,
-      placeholder: String,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElInput
-		},
-    setup(props) {
-      const handleChange = (value: string | undefined | number) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <ElFormItem label={props.label}>
-          <ElInput
-            type="number"
-            placeholder={props.placeholder}
-            onInput={handleChange}
-          />
-        </ElFormItem>
-      );
-    },
-  }),
-
-  MyRadio: defineComponent({
-    props: {
-      label: String,
-      options: Array,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElRadioGroup,
-			ElRadio
-		},
-    setup(props) {
-      const handleChange = (value: string | number | undefined) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <div class="radioWrap">
-          <div class="radioTitle">{props.label}</div>
-          <ElFormItem>
-            <ElRadioGroup onChange={handleChange}>
-              {props.options.map((item, i) => (
-                <ElRadio value={item.value} key={i} class="radioItem">
+  Text: (props: baseFormTextTpl & { onChange: (v: string | undefined) => void }) => {
+    const { label, placeholder, onChange } = props;
+    return (
+      <div className="formItem">
+        <span className="formLabel">{ label }</span>
+        <ElInput type="text" placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  },
+  Textarea: (props: baseFormTextAreaTpl & { onChange: (v: string | undefined) => void }) => {
+    const { label, placeholder, onChange } = props;
+    return (
+      <div className="formItem" style={{alignItems: 'flex-start'}}>
+        <span className="formLabel">{ label }</span>
+        <ElInput
+					type="textarea"
+          rows={3}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
+    );
+  },
+  Number: (props: baseFormNumberTpl & { onChange: (v: string | undefined | number) => void }) => {
+    const { label, placeholder, onChange } = props;
+    return (
+      <div className="formItem">
+        <span className="formLabel">{ label }</span>
+        <ElInput type="number" placeholder={placeholder} onChange={onChange} style={{width: '100%'}} />
+      </div>
+    );
+  },
+  MyRadio: (props: baseFormMyRadioTpl & { onChange: (v: string | undefined | number) => void }) => {
+    const { label, options, onChange } = props;
+    return (
+      <div className="radioWrap">
+        <div className="radioTitle">{label}</div>
+          <ElRadioGroup onChange={(e) => onChange(e.target.value)}>
+            {options.map((item, i) => {
+              return (
+                <ElRadio value={item.value} key={i} className="radioItem">
                   {item.label}
                 </ElRadio>
-              ))}
-            </ElRadioGroup>
-          </ElFormItem>
-        </div>
-      );
-    },
-  }),
-
-  MyCheckbox: defineComponent({
-    props: {
-      label: String,
-      options: Array,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElCheckboxGroup,
-			ElCheckbox
-		},
-    setup(props) {
-      const handleChange = (value: Array<any> | undefined) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <div class="radioWrap">
-          <div class="radioTitle">{props.label}</div>
-          <ElFormItem>
-            <ElCheckboxGroup onChange={handleChange}>
-              {props.options.map((item, i) => (
-                <ElCheckbox value={item.value} key={i} class="radioItem">
+              );
+            })}
+          </ElRadioGroup>
+      </div>
+    );
+  },
+  MyCheckbox: (props: baseFormMyCheckboxTpl & { onChange: (v: Array<string> | Array<number> | undefined) => void }) => {
+    const { label, options, onChange } = props;
+    return (
+      <div className="radioWrap">
+        <div className="radioTitle">{label}</div>
+          <ElCheckboxGroup onChange={onChange}>
+            {options.map((item, i) => {
+              return (
+                <ElCheckbox value={item.value} key={i} className="radioItem">
                   {item.label}
                 </ElCheckbox>
-              ))}
-            </ElCheckboxGroup>
-          </ElFormItem>
-        </div>
-      );
-    },
-  }),
-
-  Date: defineComponent({
-    props: {
-      label: String,
-      placeholder: String,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElDatePicker
-		},
-    setup(props) {
-      const value = ref<string | Date | null>(null);
-      const handleChange = (v: Date) => {
-        value.value = v;
-        props.onChange?.(formatTime('yyyy-MM-dd', v));
-      };
-      return () => (
-        <ElFormItem label={props.label}>
-          <ElDatePicker
-            placeholder={props.placeholder}
-            mode="date"
-            min="1949-05-15"
-            max="2100-05-15"
-            v-model={value.value}
-            onOk={handleChange}
-          />
-        </ElFormItem>
-      );
-    },
-  }),
-
-  MySelect: defineComponent({
-    props: {
-      label: String,
-      options: Array,
-      onChange: Function,
-    },
-		components: {
-			ElFormItem,
-			ElSelect
-		},
-    setup(props) {
-      const handleChange = (value: any) => {
-        props.onChange?.(value);
-      };
-      return () => (
-        <ElFormItem label={props.label}>
-          <ElSelect dataSource={props.options} onOk={handleChange} />
-        </ElFormItem>
-      );
-    },
-  }),
-
-  MyTextTip: defineComponent({
-    props: {
-      label: String,
-      color: String,
-      fontSize: String,
-    },
-		components: {
-			ElFormItem
-		},
-    setup(props) {
-      return () => (
-        <ElFormItem title={<div style={{ color: props.color, fontSize: props.fontSize }}>{props.label}</div>} />
-      );
-    },
-  }),
+              );
+            })}
+          </ElCheckboxGroup>
+      </div>
+    );
+  },
+  Date: (props: baseFormDateTpl & { onChange: (v: Date) => void }) => {
+    const { label, placeholder, onChange } = props;
+    const [value, setValue] = useState<any>('2020-11-01');
+     const handleChange = (v:any, str) => {
+       console.log(v, str)
+      //  return
+      setValue(str)
+      onChange && onChange(str)
+     }
+     const dateFormat = 'YYYY-MM-DD';
+    return (
+      <div className="formItem">
+        <span className="formLabel">{ label }</span>
+        <ElDatePicker 
+          onChange={handleChange}
+          mode="date"
+          placeholder={placeholder}
+          onOk={handleChange}
+          value={moment(value, dateFormat)}
+          style={{width: '100%'}}
+          format={dateFormat}
+        />
+      </div>
+    );
+  },
+  MySelect: (
+    props: baseFormMySelectTpl & { onChange: ((v: Record<string, any>) => void) | undefined },
+  ) => {
+    const { label, options, onChange } = props;
+    return (
+      <div className="formItem">
+        <span className="formLabel">{ label }</span>
+        <ElSelect options={options} onChange={onChange} style={{width: '100%'}} placeholder={`请输入${label}`} />
+      </div>
+    )
+  },
+  MyTextTip: (
+    props: baseFormTextTipTpl,
+  ) => {
+    const { label, color, fontSize } = props;
+    return (
+      <div className="formItem">
+        <span className="formLabel"></span>
+        <div style={{color, fontSize, lineHeight: '2.2'}}>{label}</div>
+      </div>
+      
+    );
+  },
 };
 
 export default BaseForm;

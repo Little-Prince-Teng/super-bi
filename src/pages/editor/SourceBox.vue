@@ -1,9 +1,10 @@
 <template>
 	<div class="canvasBox">
 		<div :style="{ transform: `scale(${scaleNum})`, position: 'relative', width: '100%', height: '100%' }">
-			<div :id="canvasId" :ref="drop" class="canvas"
-				:style="{ opacity, width: '1440px', height: '900px', backgroundImage: `url('../../../public/img/canvas_bg.jpg')` }">
+			<div :id="canvasId" :ref="drop" class="canvas">
 				<ViewRender v-if="pointData.length > 0" :pointData="pointData" :width="canvasRect[0] || 0" />
+				<!-- 网格线 -->
+				<GridRect />
 			</div>
 		</div>
 	</div>
@@ -13,10 +14,10 @@
 <script setup>
 import { ref, onMounted, watchEffect, reactive, computed, toRefs } from "vue";
 import { useDrop } from "vue3-dnd";
-import VueDraggableResizable from 'vue-draggable-resizable';
 import { useEditorStore } from '@/store/editor';
 import { ViewRender } from "@/core";
 import { uuid } from "@/utils/tool";
+import GridRect from './component/GridRect.vue';
 
 const props = defineProps({
 	pstate: Object,
@@ -155,12 +156,16 @@ watchEffect(() => {
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .canvasBox {
-	/* your styles */
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	position: relative;
 }
 
 .canvas {
-	/* your styles */
+	width: 100%;
+	height: 100%;
 }
 </style>

@@ -115,6 +115,22 @@ const TabRender = computed(() => {
 					);
 				})}
 			</ElTabPane>
+			<ElTabPane label="可视化组件" name="visual">
+				{visualTpl.map(value => {
+					return (
+						<DndProvider backend={HTML5Backend}>
+							<TargetBox item={value} canvasId={canvasId}>
+								<DynamicEngine
+									{...value}
+									config={schema[value.type].config}
+									componentsType="visual"
+									isTpl={true}
+								/>
+							</TargetBox>
+						</DndProvider>
+					);
+				})}
+			</ElTabPane>
 		</>
 	)
 });

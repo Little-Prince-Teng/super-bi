@@ -14,7 +14,7 @@ type DynamicType = {
 const DynamicFunc = (type: string, componentsType: string) => {
 	return defineAsyncComponent({
 		loader: async () => {
-			const { default: Graph } = await import(`@/materials/${componentsType}/${type}/index.tsx`);
+			const { default: Graph } = await import(`@/materials/${componentsType}/${type}/index.vue`);
 			const Component = Graph;
 			return (props: DynamicType) => {
 				const { config, isTpl } = props;

@@ -1,58 +1,57 @@
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, defineProps, ref } from 'vue';
+import type { PropType } from 'vue';
 import BaseForm from './BaseForm';
 import { ElButton } from 'element-plus';
 import './index.less';
+import { IFormConfig } from './schema';
 import logo from '@/assets/img/form.png';
 
-interface IFormConfig {
-  title: string;
-  bgColor: string;
-  fontSize: string;
-  titColor: string;
-  btnColor: string;
-  titWeight: string;
-  btnTextColor: string;
-  api: string;
-  formControls: Array<any>;
+interface FormPropsTypes extends IFormConfig {
+	isTpl: boolean
 }
 
 export default defineComponent({
   props: {
-    title: String,
-    bgColor: String,
-    fontSize: String,
-    titColor: String,
-    btnColor: String,
-    titWeight: String,
-    btnTextColor: String,
-    api: String,
-    formControls: Array,
-    isTpl: Boolean,
-  },
+		form: {
+			type: Object as PropType<FormPropsTypes>,
+      required: true
+		}
+	},
 	components: { ElButton },
-  setup(props: IFormConfig & { isTpl: boolean }) {
+  setup(props) {
+		console.log('props data', props);
     const formData = ref<Record<string, any>>({});
-    
+
+		// change 事件
     const handleChange = (item: any, value: string) => {
       formData.value[item.label] = value;
     };
 
+		// 提交
     const handleSubmit = () => {
-      if (props.api) {
-        fetch(props.api, {
-          body: JSON.stringify(formData.value),
-          cache: 'no-cache',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          mode: 'cors',
-        });
-      }
+      const isPass = Object.values(formData).every(item => !!item);
+			if (isPass) {
+				if (props.api) {
+					fetch(props.api, {
+						body: JSON.stringify(formData.value),
+						cache: 'no-cache',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						method: 'POST',
+						mode: 'cors',
+					});
+				} else {
+					console.log('request');
+				}
+			} else {
+				alert('请将表单填写完整');
+			}
     };
+		return () => {
 
-    const isEditorPage = computed(() => window.location.pathname.indexOf('editor') > -1);
-
+		};
+		/*
     return () => (
       <>
         {props.isTpl && (
@@ -63,12 +62,7 @@ export default defineComponent({
         {!props.isTpl && (
           <div
             class="formWrap"
-            // style={{
-            //   backgroundColor: props.bgColor,
-            //   overflow: 'hidden',
-            //   position: 'absolute',
-            //   pointerEvents: isEditorPage.value ? 'none' : 'initial',
-            // }}
+            style={{backgroundColor: props.bgColor}}
           >
             {props.title && (
               <div
@@ -83,7 +77,7 @@ export default defineComponent({
               </div>
             )}
             <div class="formContent">
-              {props.formControls.map((item) => {
+              {props.formControls.map((item: any) => {
                 const FormItem = BaseForm[item.type];
                 return (
                   <FormItem
@@ -113,6 +107,6 @@ export default defineComponent({
         )}
       </>
     );
+		*/
   },
 });
-

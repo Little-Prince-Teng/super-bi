@@ -1,7 +1,11 @@
 import { defineComponent, PropType } from 'vue';
-import VueDraggableResizable from 'vue-draggable-resizable';
+// import VueDraggableResizable from 'vue-draggable-resizable';
+import Drager from 'es-drager';
 import DynamicEngine from '@/core/DynamicEngine';
 import './viewRender.less';
+// 导入默认样式
+import 'es-drager/lib/style.css'
+import 'vue-draggable-resizable/style.css';
 interface PointDataItem {
   id: string;
   item: Record<string, any>;
@@ -47,20 +51,34 @@ export default defineComponent({
   },
   setup(props: ViewProps) {
     return () => (
-      <VueDraggableResizable
-        w={props.width}
-        grid={[1, 1]}
-      >
-        {props.pointData.map((value: PointDataItem) => (
-          <div
-            key={value.id}
-            data-grid={value.point}
-            class="dragItem"
-          >
-            <DynamicEngine {...value.item} isTpl={false} />
-          </div>
-        ))}
-      </VueDraggableResizable>
+			<>
+				{props.pointData.map((value: PointDataItem) => (
+					<Drager
+						v-bind="value"
+						key={value.id}
+						data-grid={value.point}
+						rotatable
+						boundary
+						snapToGrid={true}
+						gridX={10}
+						gridY={10}
+						class="dragItem"
+					>
+						<DynamicEngine {...value.item} isTpl={false} />
+					</Drager>
+				))}
+			</>
+			// <VueDraggableResizable>
+			// 	{props.pointData.map((value: PointDataItem) => (
+			// 		<div
+			// 			key={value.id}
+			// 			data-grid={value.point}
+			// 			class="dragItem"
+			// 		>
+			// 			<DynamicEngine {...value.item} isTpl={false} />
+			// 		</div>
+			// 	))}
+			// </VueDraggableResizable>
     );
   },
 });
